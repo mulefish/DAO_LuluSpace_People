@@ -8,6 +8,7 @@ import time
 def do_the_thing(input_file_name, output_file_name):
     df = pd.read_csv(input_file_name)
     print(df.describe())
+    df = normalize_matrix(df)
     df.to_csv(output_file_name, index=False)
     print(f" normalize_everything.py wrote to: '{output_file_name}'.")
 
