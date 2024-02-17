@@ -2,6 +2,12 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 import warnings
 
+class CommonThings:
+    CSV_TDD = "data/tdd_data.csv"
+    ROLLUP_PII_FREE='data/rollup_pii_free.csv'
+    ROLLUP_VECTORIZED='data/vectorized_rollup.csv'
+
+
 class Colors:
     BG_RED = "\x1b[41m"
     BG_CYAN = "\x1b[46m"

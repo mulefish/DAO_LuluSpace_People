@@ -2,7 +2,7 @@
 
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-from library import normalize_matrix, yellow
+from library import normalize_matrix, yellow, CommonThings
 import time
 
 def do_the_thing(input_file_name, output_file_name):
@@ -22,9 +22,13 @@ if __name__ == "__main__":
     4: See tdd.py for data shape assumptions
     """
 
-    input_file_name = 'data/rollup_pii_free.csv'
+    input_file_name = CommonThings.ROLLUP_PII_FREE # 'data/rollup_pii_free.csv'
     # input_file_name = 'tdd_data.csv'
-    output_file_name = 'data/vectorized_rollup.csv'
+    output_file_name = CommonThings.ROLLUP_VECTORIZED # ='data/vectorized_rollup.csv'
+    
+    
+    
+    'data/vectorized_rollup.csv'
     t1 = time.time()
     do_the_thing(input_file_name, output_file_name)
     duration = time.time() - t1

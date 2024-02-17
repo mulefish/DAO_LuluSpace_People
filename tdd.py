@@ -1,8 +1,20 @@
 import unittest
 import pandas as pd
-from io import StringIO
-from library import normalize_matrix
+import os
+from library import normalize_matrix, CommonThings
+
 class TestGetSessionCount(unittest.TestCase):
+
+    def test_csv_paths_are_ok(self):
+        isOk = True         
+        isOk &= os.path.exists(CommonThings.CSV_TDD)
+        isOk &= os.path.exists(CommonThings.ROLLUP_PII_FREE)
+        # This one is OK to not exist at first! It will get created by and by
+        isOk = os.path.exists(CommonThings.ROLLUP_VECTORIZED)
+
+        self.assertEqual(isOk, True)
+
+      
 
     def test_shape_munging(self):
         # df = pd.read_csv("tdd_data.csv")
