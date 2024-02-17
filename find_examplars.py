@@ -33,7 +33,6 @@ if __name__ == "__main__":
     
     t1 = time.time()
     do_the_thing(input_file_name, output_file_name)
-    find_exemplar_vectors(input_file_name, output_file_name)
 
     duration = time.time() - t1
     msg = f"execution={duration} seconds; input={input_file_name}; output={output_file_name}"
