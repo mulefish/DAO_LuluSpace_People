@@ -1,4 +1,4 @@
-Cluster,X,Y,Frequency,Group,N,tlv,sessions
-0,200.000,70.000,1,Example Group,5,200.000,70.000
-1,300.000,80.000,1,Example Group,5,300.000,80.000
-2,100.000,50.000,1,Example Group,5,100.000,50.000
+Cluster,X,Y,Frequency,Group,N,tlv
+0,200.000,0,1,Example Group,5,200.000
+1,300.000,0,1,Example Group,5,300.000
+2,100.000,0,1,Example Group,5,100.000

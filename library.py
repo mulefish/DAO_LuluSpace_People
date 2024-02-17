@@ -62,7 +62,6 @@ def normalize_matrix_round_concat(df, precision):
 
 
 
-
 def find_most_common_vectors(filtered_df, group, n, precision):
     """
     This function, find_most_common_vectors, is designed to perform K-means clustering on a filtered DataFrame and generate a DataFrame containing information about the most common vectors in each cluster. Let's break down the steps of the function:
@@ -72,7 +71,8 @@ def find_most_common_vectors(filtered_df, group, n, precision):
     n_clusters = 10
     
     # Drop 'ORIGINAL_TLV' and 'ORIGINAL_SESSIONS' columns
-    filtered_df = filtered_df.drop(['ORIGINAL_TLV', 'ORIGINAL_SESSIONS'], axis=1)
+    # Drop sessions - do not want to introduce that noise into the normalized data clustering
+    filtered_df = filtered_df.drop(['ORIGINAL_TLV', 'ORIGINAL_SESSIONS', 'sessions'], axis=1)
     
     # Adjust number of clusters if the number of samples is less than the number of clusters
     if len(filtered_df) < n_clusters:
@@ -90,7 +90,13 @@ def find_most_common_vectors(filtered_df, group, n, precision):
     # Calculate the average 'X' (average TLV) and 'Y' (average session count) for each cluster
     cluster_centers = kmeans.cluster_centers_
     cluster_x_values = [filtered_df.loc[cluster_labels == i, 'tlv'].mean() for i in range(n_clusters)]
-    cluster_y_values = [filtered_df.loc[cluster_labels == i, 'sessions'].mean() for i in range(n_clusters)]
+    
+    
+    
+    # Removed 'sessions' from the calculation! 
+    # Y was being set to use sessions. But. Now it is gone. What to replace Y with?
+    # Likely nothing. Likely do not need X either, actually.
+    cluster_y_values = [0] * n_clusters  # Since 'sessions' is dropped, assign 0 to all cluster y-values
     
     # Create a DataFrame for cluster information
     cluster_info = pd.DataFrame({'Cluster': range(n_clusters), 'X': cluster_x_values, 'Y': cluster_y_values})

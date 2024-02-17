@@ -56,11 +56,8 @@ class TestGetSessionCount(unittest.TestCase):
         # Call the function
         actual_df = find_most_common_vectors(self.filtered_df, self.group, self.n, self.precision)
         list_of_lists = actual_df.values.tolist()
-        expected = [
-            [0, 200.0, 70.0, 1, 'Example Group', 5, 200.0, 70.0], 
-            [1, 300.0, 80.0, 1, 'Example Group', 5, 300.0, 80.0], 
-            [2, 100.0, 50.0, 1, 'Example Group', 5, 100.0, 50.0],
-        ]
+        expected = [[0, 200.0, 0, 1, 'Example Group', 5, 200.0], [1, 300.0, 0, 1, 'Example Group', 5, 300.0], [2, 100.0, 0, 1, 'Example Group', 5, 100.0]]
+        print(list_of_lists)
         isOk = expected == list_of_lists
         self.assertEqual(isOk, True)
 
