@@ -22,9 +22,9 @@ if __name__ == "__main__":
     4: See tdd.py for data shape assumptions
     """
 
-    input_file_name = 'rollup_pii_free.csv'
+    input_file_name = 'data/rollup_pii_free.csv'
     # input_file_name = 'tdd_data.csv'
-    output_file_name = 'vectorized_rollup.csv'
+    output_file_name = 'data/vectorized_rollup.csv'
     t1 = time.time()
     do_the_thing(input_file_name, output_file_name)
     duration = time.time() - t1
