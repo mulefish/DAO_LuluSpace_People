@@ -1,11 +1,24 @@
 import unittest
 import pandas as pd
 import os
-from library import normalize_matrix_round_concat, CommonThings
+from library import normalize_matrix_round_concat, find_most_common_vectors, CommonThings
 
 class TestGetSessionCount(unittest.TestCase):
+    def setUp(self):
+        # Sample DataFrame
+        self.filtered_df = pd.DataFrame({
+            'tlv': [100, 200, 300],
+            'sessions': [50, 70, 80],
+            'ORIGINAL_TLV': [1000, 2000, 3000],  # Additional columns for testing
+            'ORIGINAL_SESSIONS': [500, 700, 800]
+        })
+        self.group = 'Example Group'
+        self.n = 5
+        self.precision = 3
 
     def test_csv_paths_are_ok(self):
+
+
         isOk = True         
         isOk &= os.path.exists(CommonThings.CSV_TDD)
         isOk &= os.path.exists(CommonThings.ROLLUP_PII_FREE)
@@ -13,35 +26,6 @@ class TestGetSessionCount(unittest.TestCase):
         isOk = os.path.exists(CommonThings.ROLLUP_VECTORIZED)
 
         self.assertEqual(isOk, True)
-
-      
-
-    # def test_shape_munging(self):
-    #     # df = pd.read_csv("tdd_data.csv")
-    #     data = {
-    #         "sessions": [11, 10],
-    #         "tlv": [10, 777],
-    #         "a": [133.000, 888.000],
-    #         "b": [122.000, 999.000],
-    #     }
-    #     df = pd.DataFrame(data)
-        
-    #     df = normalize_matrix(df)
-    #     list_of_lists = df.values.tolist()
-
-    #     # [[11.0, 10.0, 11.0, 0.0, 0.0, 0.0], [10.0, 777.0, 10.0, 0.9999999999999999, 1.0, 1.0]]
-    #     # print(list_of_lists)
-    #     # print('\n')
-    #     # for list in list_of_lists:
-    #     #     print(list)
-
-    #     isOk = True 
-    #     isOk &= list_of_lists[0][0] == 11 
-    #     isOk &= list_of_lists[1][0] == 10
-    #     isOk &= list_of_lists[0][1] == 10
-    #     isOk &= list_of_lists[1][1] == 777
-
-    #     self.assertEqual(isOk, True)
 
     def test_dataframe_normalization(self):
         given = {
@@ -66,6 +50,22 @@ class TestGetSessionCount(unittest.TestCase):
 
         isOk = expected == list_of_lists
         self.assertEqual(isOk, True)
+
+
+    def test_find_most_common_vectors(self):
+        # Call the function
+        actual_df = find_most_common_vectors(self.filtered_df, self.group, self.n, self.precision)
+        list_of_lists = actual_df.values.tolist()
+        expected = [
+            [0, 200.0, 70.0, 1, 'Example Group', 5, 200.0, 70.0], 
+            [1, 300.0, 80.0, 1, 'Example Group', 5, 300.0, 80.0], 
+            [2, 100.0, 50.0, 1, 'Example Group', 5, 100.0, 50.0],
+        ]
+        isOk = expected == list_of_lists
+        self.assertEqual(isOk, True)
+
+
+
 if __name__ == '__main__':
     unittest.main()
  
