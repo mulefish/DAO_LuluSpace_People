@@ -1,42 +1,37 @@
+import unittest
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
 from io import StringIO
+from library import normalize_matrix
+class TestGetSessionCount(unittest.TestCase):
 
-input_file_name = 'tdd_data.csv'
+    def test_shape_munging(self):
+        # df = pd.read_csv("tdd_data.csv")
+        data = {
+            "sessions": [11, 10],
+            "tlv": [10, 777],
+            "a": [133.000, 888.000],
+            "b": [122.000, 999.000],
+        }
+        df = pd.DataFrame(data)
+        
+        df = normalize_matrix(df)
+        list_of_lists = df.values.tolist()
 
-expected_output = """a,b,c
-0.3333333333333333,0.33333333333333337,0.3333333333333333
-1.0,1.0,1.0
-0.0,0.0,0.0
-"""
-df = pd.read_csv(input_file_name)
+        # [[11.0, 10.0, 11.0, 0.0, 0.0, 0.0], [10.0, 777.0, 10.0, 0.9999999999999999, 1.0, 1.0]]
+        # print(list_of_lists)
+        # print('\n')
+        # for list in list_of_lists:
+        #     print(list)
 
-output_file_name = 'vectorized_rollup.csv'
+        isOk = True 
+        isOk &= list_of_lists[0][0] == 11 
+        isOk &= list_of_lists[1][0] == 10
+        isOk &= list_of_lists[0][1] == 10
+        isOk &= list_of_lists[1][1] == 777
 
-df = pd.read_csv(input_file_name)
-sessions_col = df.iloc[:, 0] # first column is 'sessions'
-tlv_col = df['tlv']  # Replace 'tlv' with the actual column name for total lifetime value
-scaler = MinMaxScaler()
-data_columns = df.columns[1:]  # Assuming sessions is the first column and is followed by other features
-
-for column in data_columns:
-    if column != 'tlv':  # Assuming 'tlv' should not be normalized/divided by sessions
-        # Divide the data by the number of sessions, element-wise
-        df[column] = df[column] / sessions_col
-
-# Normalize the columns (excluding 'sessions' and 'tlv' from normalization)
-df[data_columns] = scaler.fit_transform(df[data_columns])
-
-# Prepend 'sessions' and 'tlv' to the DataFrame
-df.insert(0, 'sessions_unmodified', sessions_col)
-df.insert(1, 'tlv_unmodified', tlv_col)
-
-print( df )
-
-# normalized_data_str = output.getvalue().strip()
-# normalized_data_str = normalized_data_str.replace('\r\n', '\n')
+        self.assertEqual(isOk, True)
 
 
-# df.to_csv(output_file_name, index=False)
-
-# print(f"The processed data has been written to '{output_file_name}'.")
+if __name__ == '__main__':
+    unittest.main()
+ 
