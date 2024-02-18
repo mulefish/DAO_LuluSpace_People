@@ -8,6 +8,7 @@ class TestGetSessionCount(unittest.TestCase):
         # Sample DataFrame
         self.filtered_df = pd.DataFrame({
             'tlv': [100, 200, 300],
+            'count':[20,30,40],
             'sessions': [50, 70, 80],
             'ORIGINAL_TLV': [1000, 2000, 3000],  # Additional columns for testing
             'ORIGINAL_SESSIONS': [500, 700, 800]
@@ -40,8 +41,7 @@ class TestGetSessionCount(unittest.TestCase):
         PRECISION = 5
         normalized_df = normalize_matrix_round_concat(df, PRECISION)
         list_of_lists = normalized_df.values.tolist()
-        # for list in list_of_lists:
-        #     print(list)
+
         expected = [
             [2, 80, '0', '1', '0.33333', '0.33333', '0.33333'],
             [3, 70, '0.5', '0.5', '1', '1', '1'],
@@ -54,9 +54,12 @@ class TestGetSessionCount(unittest.TestCase):
 
     def test_find_most_common_vectors(self):
         # Call the function
-        actual_df = find_most_common_vectors(self.filtered_df, self.group, self.n, self.precision)
+        # actual_df = find_most_common_vectors(self.filtered_df, self.group, self.n, self.precision, 0, 10000, 0)
+        actual_df = find_most_common_vectors(self.filtered_df, 1, 1000, 6, 0, 10000, 10)
+
         list_of_lists = actual_df.values.tolist()
-        expected = [[0, 200.0, 0, 1, 'Example Group', 5, 200.0], [1, 300.0, 0, 1, 'Example Group', 5, 300.0], [2, 100.0, 0, 1, 'Example Group', 5, 100.0]]
+        expected = [[0.0, 1.0, 1.0, 1000.0, 0.0, 10000.0, 10.0, 2000.0], [1.0, 1.0, 1.0, 1000.0, 0.0, 10000.0, 10.0, 3000.0], [2.0, 1.0, 1.0, 1000.0, 0.0, 10000.0, 10.0, 1000.0]]
+
         print(list_of_lists)
         isOk = expected == list_of_lists
         self.assertEqual(isOk, True)
