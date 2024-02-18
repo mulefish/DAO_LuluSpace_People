@@ -1,37 +1,55 @@
 let groups = {}
 let meta_columns = ["CLUSTER", "FREQUENCY", "GROUP", "N", "LOW", "HIGH", "LOOP", "ORIGINAL_TLV"]
 let vector_columns = []
-
-
+let colors = ["DarkRed",
+    "DarkOrange",
+    "DarkGoldenRod",
+    "DarkGreen",
+    "DarkCyan",
+    "DarkSlateBlue",
+    "DarkMagenta",
+    "DarkViolet",
+    "DarkSalmon",
+    "DarkSeaGreen",
+    "DarkTurquoise",
+    "DarkOliveGreen",
+    "DarkKhaki",
+    "DarkGray",
+    "DarkSlateGray",
+    "DarkOrchid",
+    "DarkCrimson",
+    "DarkSlateGrey",
+    "DarkBlue",
+    "DarkChocolate"]
 
 function makeUI(array_of_groups) {
-    console.log("makeUI")
     document.getElementById("output").innerHTML = ""
-    let all_tables = ""
-    array_of_groups.forEach((group) => {
-
-        // console.log(group + "   " + Math.random() )
-        // console.log("group=" + group + " meta=" + groups[group].meta.length + " vector=" + groups[group].vector.length ) 
-
+    let all_tables = "<table border='0'>"
+    array_of_groups.forEach((group, loop) => {
+        const clr = colors[loop]
+        all_tables += `<tr><td class="small">${group}</td></tr>`
         for (let i = 0; i < groups[group].meta.length; i++) {
-            let table = "<table border='0'> <tr>"
             const v = groups[group].vector[i]
+            const m = groups[group].meta[i]
+            const n_entries = m[0] // number in this group
+            const tlv = parseInt(m[6]) // tlv ave of this group
+            all_tables += `<tr><td class="small">${n_entries}</td><td>&nbsp;</td><td class="small">$${tlv}</td>`
             for (let i = 0; i < v.length; i++) {
-                let h = 500 * v[i] // array is scaled 1 to 0. css is scale 100 to 0 
-                console.log( h + "   " + v[i] )
-                const td = `<td valign="bottom" style="width:4px;"><div style="height:${h}px; background-color:orange; color:orange;" ></div></td>`
-                table += td
+                let h = 500 * v[i] // array is scaled 1 to 0 : Scale up!
+                const td = `<td valign="bottom" style="width:4px;" onmouseover="emit(${i})"><div style="height:${h}px; background-color:${clr};" ></div></td>`
+                all_tables += td
             }
-            table += "</tr></table>"
-            all_tables += table
+            all_tables += "</tr>"
         }
     })
-
- document.getElementById("output").innerHTML = all_tables; 
+    all_tables += "</table>"
+    document.getElementById("output").innerHTML = all_tables;
 
 
 }
-
+function emit(columnIndex) {
+    document.getElementById("column").innerHTML = vector_columns[columnIndex]
+}
 
 function getSelectedOptions() {
     const selectElement = document.getElementById('groupChoices');
@@ -114,7 +132,6 @@ function getCsv() {
         } else {
             console.error('Request failed. Status:', xhr.status);
         }
-
     };
 
     // Define a callback function for handling errors

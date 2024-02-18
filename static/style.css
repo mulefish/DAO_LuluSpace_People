@@ -1,3 +1,9 @@
 td, th {
     padding: 0;
 }
+td:hover {
+    background-color: lightgray;
+  }
+.small {
+    font-size: small;
+}

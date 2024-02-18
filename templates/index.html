@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="icon" href="data:,">
     <meta charset="UTF-8">
@@ -7,13 +8,29 @@
     <title>Flask Static Files</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
-    <div id="control"></div>
-    <hr/>
+
+    <table>
+        <tr>
+            <td valign="top">
+                <div id="control"></div>
+            </td>
+            <td valign="top">
+The below are 4510 people's affinities broken into groups based on their TLV ('total lifetime value'). In the below each affinity have been normalized across across all groups. Within each group their have further been normalized by the number of sessions that each person had. Use a random KNN to cluster the groups. 
+            </br>
+In the select box choose one or more group to compare. The numbers represent the 'tlv band' that I used to form initial groupings. 
+            </td>
+        </tr>
+    </table>
+    <div id="column">&nbsp;</div>
+
+    <hr />
     <div id="output"></div>
 
 
 
     <script src="/static/script.js"></script>
 </body>
+
 </html>
