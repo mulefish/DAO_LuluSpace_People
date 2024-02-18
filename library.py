@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.cluster import KMeans
+
 # from collections import Counter
 
 class CommonThings:
@@ -62,144 +63,45 @@ def normalize_matrix_round_concat(df, precision):
 
 
 
-# def find_most_common_vectors(filtered_df, group, n, precision, LOW, HIGH, LOOP):
-#     """
-#     This function, find_most_common_vectors, is designed to perform K-means clustering on a filtered DataFrame and generate a DataFrame containing information about the most common vectors in each cluster. Let's break down the steps of the function:
-#     This function is designed to process input data, perform clustering, and output a DataFrame with detailed cluster information, including average values and frequencies, while adhering to the specified precision requirements.
-#     """
-#     n_clusters = 10
-#     # ORIGINAL_TLV = filtered_df['ORIGINAL_TLV']
-#     # print("ORIGINAL_TLV={}".format(ORIGINAL_TLV))
-#     # Drop 'ORIGINAL_TLV' and 'ORIGINAL_SESSIONS' columns
-#     # Drop sessions - do not want to introduce that noise into the normalized data clustering
-#     filtered_df = filtered_df.drop(['ORIGINAL_TLV', 'ORIGINAL_SESSIONS', 'sessions'], axis=1)
-    
-#     # Adjust number of clusters if the number of samples is less than the number of clusters
-#     if len(filtered_df) < n_clusters:
-#         print(f"Number of samples ({len(filtered_df)}) is less than the number of clusters ({n_clusters}). "
-#               f"Reducing the number of clusters to match the number of samples.")
-#         n_clusters = le
-#         (filtered_df)
-    
-#     # Perform K-means clustering
-#     kmeans = KMeans(n_clusters=n_clusters, random_state=42)
-#     kmeans.fit(filtered_df)
-    
-#     # Get cluster labels
-#     cluster_labels = kmeans.labels_
-    
-#     # Calculate the average 'X' (average TLV) and 'Y' (average session count) for each cluster
-#     cluster_centers = kmeans.cluster_centers_
-#     cluster_x_values = [filtered_df.loc[cluster_labels == i, 'tlv'].mean() for i in range(n_clusters)]
-    
-    
-    
-#     # Removed 'sessions' from the calculation! 
-#     # Y was being set to use sessions. But. Now it is gone. What to replace Y with?
-#     # Likely nothing. Likely do not need X either, actually.
-#     cluster_y_values = [0] * n_clusters  # Since 'sessions' is dropped, assign 0 to all cluster y-values
-    
-#     # Create a DataFrame for cluster information
-#     cluster_info = pd.DataFrame({'Cluster': range(n_clusters), 'X': cluster_x_values, 'Y': cluster_y_values})
-    
-#     # Get cluster counts
-#     cluster_counts = pd.Series(cluster_labels).value_counts().sort_index().items()
-    
-#     # Convert centroids and counts to DataFrame
-#     most_common_df = pd.DataFrame(cluster_centers, columns=filtered_df.columns)
-#     most_common_df['Frequency'] = [count for _, count in cluster_counts]
-    
-#     # Add 'Cluster' column to most_common_df
-#     most_common_df['Cluster'] = range(n_clusters)
-    
-#     # Merge cluster information with most common vectors DataFrame
-#     most_common_df = pd.merge(most_common_df, cluster_info, on='Cluster', how='left')
-    
-#     # Add 'Group' and 'N' columns to the DataFrame
-#     most_common_df['Group'] = group
-#     most_common_df['N'] = n
-#     most_common_df['LOW'] = LOW
-#     most_common_df['HIGH'] = HIGH
-#     most_common_df['LOOP'] = LOOP
-#     # most_common_df['ORIGINAL_TLV'] = ORIGINAL_TLV
-    
-#     # Reorder columns
-#     most_common_df = most_common_df[['Cluster', 'X', 'Y', 'Frequency', 'Group', 'N', 'LOW', 'HIGH', 'LOOP'] +
-#                                     [col for col in most_common_df.columns
-#                                      if col not in ['Cluster', 'X', 'Y', 'Frequency', 'Group', 'N', 'LOW', 'HIGH', 'LOOP']]]
-    
-#     # Replace values below precision threshold with 0
-#     most_common_df = most_common_df.round(precision).replace(0, 0.0)
-    
-#     # Write DataFrame to CSV with specified precision and without scientific notation
-#     most_common_df.to_csv('output.csv', index=False, float_format=f'%.{precision}f')
-    
-#     return most_common_df
-
-
 
 def find_most_common_vectors(filtered_df, group, n, precision, LOW, HIGH, LOOP):
-    """
-    This function, find_most_common_vectors, is designed to perform K-means clustering on a filtered DataFrame and generate a DataFrame containing information about the most common vectors in each cluster. Let's break down the steps of the function:
-    This function is designed to process input data, perform clustering, and output a DataFrame with detailed cluster information, including average values and frequencies, while adhering to the specified precision requirements.
-    """
     n_clusters = 10
-
-    # TLV=filtered_df['ORIGINAL_TLV']
-    COUNT=filtered_df['count']
+    COUNT = filtered_df['count']
     
-    # Drop 'ORIGINAL_TLV' and 'ORIGINAL_SESSIONS' columns
-    # Drop sessions - do not want to introduce that noise into the normalized data clustering
-    # filtered_df = filtered_df.drop(['ORIGINAL_TLV', 'ORIGINAL_SESSIONS', 'sessions', 'count','tlv'], axis=1)
-    filtered_df = filtered_df.drop(['ORIGINAL_SESSIONS', 'sessions', 'count','tlv'], axis=1)
-    # Adjust number of clusters if the number of samples is less than the number of clusters
+    # Dropping specified columns before clustering
+    filtered_df = filtered_df.drop(['ORIGINAL_SESSIONS', 'sessions', 'count', 'tlv'], axis=1)
+    
     if len(filtered_df) < n_clusters:
         print(f"Number of samples ({len(filtered_df)}) is less than the number of clusters ({n_clusters}). "
               f"Reducing the number of clusters to match the number of samples.")
         n_clusters = len(filtered_df)
     
-    # Perform K-means clustering
     kmeans = KMeans(n_clusters=n_clusters, random_state=42)
     kmeans.fit(filtered_df)
     
-    # Get cluster labels
     cluster_labels = kmeans.labels_
-    
-    # Create a DataFrame for cluster information
-    cluster_info = pd.DataFrame({'CLUSTER': range(n_clusters)})
-    
-    # Get cluster counts
+    cluster_info = pd.DataFrame({'CLUSTER': range(n_clusters)})    
     cluster_counts = pd.Series(cluster_labels).value_counts().sort_index().items()
     
-    # Convert centroids and counts to DataFrame
+    # Creating DataFrame of most common vectors in each cluster
     most_common_df = pd.DataFrame(kmeans.cluster_centers_, columns=filtered_df.columns)
-    #  most_common_df['Frequency'] = [count for _, count in cluster_counts]
     most_common_df['FREQUENCY'] = [count for _, count in cluster_counts]
-    
-    # Add 'Cluster' column to most_common_df
     most_common_df['CLUSTER'] = range(n_clusters)
-    
-    # Merge cluster information with most common vectors DataFrame
     most_common_df = pd.merge(most_common_df, cluster_info, on='CLUSTER', how='left')
-    
-    # Add 'Group', 'N', 'LOW', 'HIGH', and 'LOOP' columns to the DataFrame
     most_common_df['GROUP'] = group
     most_common_df['N'] = n
     most_common_df['LOW'] = LOW
     most_common_df['HIGH'] = HIGH
     most_common_df['LOOP'] = LOOP
-    # most_common_df['TLV'] = TLV
- 
     
-    # Reorder columns
+    # Reordering columns
     most_common_df = most_common_df[['CLUSTER', 'FREQUENCY', 'GROUP', 'N', 'LOW', 'HIGH', 'LOOP'] +
                                     [col for col in most_common_df.columns
                                      if col not in ['CLUSTER', 'FREQUENCY', 'GROUP', 'N', 'LOW', 'HIGH', 'LOOP']]]
     
-    # Replace values below precision threshold with 0
+    # Rounding and formatting
     most_common_df = most_common_df.round(precision).replace(0, 0.0)
     
-    # Write DataFrame to CSV with specified precision and without scientific notation
-    most_common_df.to_csv('output.csv', index=False, float_format=f'%.{precision}f')
-    
+    # Saving to CSV
+    most_common_df.to_csv('output.csv', index=False, float_format=f'%.{precision}f')    
     return most_common_df
