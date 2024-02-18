@@ -14,7 +14,8 @@ There is none. Data are in 'rollup_pii_free.csv' and it contains zero PII.
     1: Perform K-means clustering on a filtered DataFrame and generate a DataFrame containing information about the most common vectors in each cluster. 
     2: process input data, perform clustering, and output a DataFrame with detailed cluster information, including average values and frequencies, while adhering to the specified precision requirements.
 
-
-
 # GOAL
 Vectorize the matrix, use KNN ( or something ) and find exemplar vectors in the matrix
+
+# Screenshot
+![Luluspace](luluspace.png)

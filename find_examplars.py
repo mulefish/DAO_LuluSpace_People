@@ -19,7 +19,7 @@ def do_the_thing(input_file_name, output_file_name, mode, low, high, loop):
 if __name__ == "__main__":
     input_file_name = CommonThings.ROLLUP_VECTORIZED
     output_file_name = CommonThings.CLUSTERS
-    bands = [(1, 1000), (1001, 5000), (5001, 10000)]
+    bands = [(1, 1000), (1001, 5000), (5001, 10000), (10001, 20000), (20001, 30000), (30001, 999999)]
     loop = 0 
     for band in bands:
         low, high = band
