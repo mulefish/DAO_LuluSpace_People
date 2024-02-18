@@ -62,7 +62,7 @@ def normalize_matrix_round_concat(df, precision):
 
 
 
-def find_most_common_vectors(filtered_df, group, n, precision):
+def find_most_common_vectors(filtered_df, group, n, precision, LOW, HIGH, LOOP):
     """
     This function, find_most_common_vectors, is designed to perform K-means clustering on a filtered DataFrame and generate a DataFrame containing information about the most common vectors in each cluster. Let's break down the steps of the function:
     This function is designed to process input data, perform clustering, and output a DataFrame with detailed cluster information, including average values and frequencies, while adhering to the specified precision requirements.
@@ -117,11 +117,14 @@ def find_most_common_vectors(filtered_df, group, n, precision):
     # Add 'Group' and 'N' columns to the DataFrame
     most_common_df['Group'] = group
     most_common_df['N'] = n
+    most_common_df['LOW'] = LOW
+    most_common_df['HIGH'] = HIGH
+    most_common_df['LOOP'] = LOOP
     
     # Reorder columns
-    most_common_df = most_common_df[['Cluster', 'X', 'Y', 'Frequency', 'Group', 'N'] +
+    most_common_df = most_common_df[['Cluster', 'X', 'Y', 'Frequency', 'Group', 'N', 'LOW', 'HIGH', 'LOOP'] +
                                     [col for col in most_common_df.columns
-                                     if col not in ['Cluster', 'X', 'Y', 'Frequency', 'Group', 'N']]]
+                                     if col not in ['Cluster', 'X', 'Y', 'Frequency', 'Group', 'N', 'LOW', 'HIGH', 'LOOP']]]
     
     # Replace values below precision threshold with 0
     most_common_df = most_common_df.round(precision).replace(0, 0.0)

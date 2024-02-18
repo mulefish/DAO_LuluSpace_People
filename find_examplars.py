@@ -9,7 +9,7 @@ def do_the_thing(input_file_name, output_file_name, mode, low, high, loop):
     df = pd.read_csv(input_file_name)
     filtered_df = df[(df['ORIGINAL_TLV'] >= low) & (df['ORIGINAL_TLV'] <= high)]
     n = len(filtered_df)    
-    most_common_df = find_most_common_vectors(filtered_df, loop, n, CommonThings.PRECISION)
+    most_common_df = find_most_common_vectors(filtered_df, loop, n, CommonThings.PRECISION, low, high, loop)
     most_common_df.to_csv(output_file_name, mode=mode, index=False, header=mode=='w')
 
 
