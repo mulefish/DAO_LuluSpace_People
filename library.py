@@ -67,9 +67,9 @@ def find_most_common_vectors(filtered_df, group, n, precision, LOW, HIGH, LOOP):
     This function, find_most_common_vectors, is designed to perform K-means clustering on a filtered DataFrame and generate a DataFrame containing information about the most common vectors in each cluster. Let's break down the steps of the function:
     This function is designed to process input data, perform clustering, and output a DataFrame with detailed cluster information, including average values and frequencies, while adhering to the specified precision requirements.
     """
-
     n_clusters = 10
-    
+    ORIGINAL_TLV = filtered_df['ORIGINAL_TLV']
+    print("ORIGINAL_TLV={}".format(ORIGINAL_TLV))
     # Drop 'ORIGINAL_TLV' and 'ORIGINAL_SESSIONS' columns
     # Drop sessions - do not want to introduce that noise into the normalized data clustering
     filtered_df = filtered_df.drop(['ORIGINAL_TLV', 'ORIGINAL_SESSIONS', 'sessions'], axis=1)
@@ -78,7 +78,8 @@ def find_most_common_vectors(filtered_df, group, n, precision, LOW, HIGH, LOOP):
     if len(filtered_df) < n_clusters:
         print(f"Number of samples ({len(filtered_df)}) is less than the number of clusters ({n_clusters}). "
               f"Reducing the number of clusters to match the number of samples.")
-        n_clusters = len(filtered_df)
+        n_clusters = le
+        (filtered_df)
     
     # Perform K-means clustering
     kmeans = KMeans(n_clusters=n_clusters, random_state=42)
@@ -120,11 +121,12 @@ def find_most_common_vectors(filtered_df, group, n, precision, LOW, HIGH, LOOP):
     most_common_df['LOW'] = LOW
     most_common_df['HIGH'] = HIGH
     most_common_df['LOOP'] = LOOP
+    most_common_df['ORIGINAL_TLV'] = ORIGINAL_TLV
     
     # Reorder columns
-    most_common_df = most_common_df[['Cluster', 'X', 'Y', 'Frequency', 'Group', 'N', 'LOW', 'HIGH', 'LOOP'] +
+    most_common_df = most_common_df[['Cluster', 'X', 'Y', 'Frequency', 'Group', 'N', 'LOW', 'HIGH', 'LOOP', 'ORIGINAL_TLV'] +
                                     [col for col in most_common_df.columns
-                                     if col not in ['Cluster', 'X', 'Y', 'Frequency', 'Group', 'N', 'LOW', 'HIGH', 'LOOP']]]
+                                     if col not in ['Cluster', 'X', 'Y', 'Frequency', 'Group', 'N', 'LOW', 'HIGH', 'LOOP','ORIGINAL_TLV']]]
     
     # Replace values below precision threshold with 0
     most_common_df = most_common_df.round(precision).replace(0, 0.0)
