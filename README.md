@@ -15,7 +15,7 @@ There is none. Data are in 'rollup_pii_free.csv' and it contains zero PII.
     2: process input data, perform clustering, and output a DataFrame with detailed cluster information, including average values and frequencies, while adhering to the specified precision requirements.
 
 # GOAL
-Vectorize the matrix, use KNN and find exemplar(sp?) vectors in the matrix
+Take customers' merge affinity data, merge with their TVL to form a matrix. Use KNN and find exemplar(sp?) vectors in the matrix. 
 
 # Screenshot
 ![Luluspace](luluspace.png)
