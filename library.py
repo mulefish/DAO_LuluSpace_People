@@ -68,8 +68,8 @@ def find_most_common_vectors(filtered_df, group, n, precision, LOW, HIGH, LOOP):
     This function is designed to process input data, perform clustering, and output a DataFrame with detailed cluster information, including average values and frequencies, while adhering to the specified precision requirements.
     """
     n_clusters = 10
-    ORIGINAL_TLV = filtered_df['ORIGINAL_TLV']
-    print("ORIGINAL_TLV={}".format(ORIGINAL_TLV))
+    # ORIGINAL_TLV = filtered_df['ORIGINAL_TLV']
+    # print("ORIGINAL_TLV={}".format(ORIGINAL_TLV))
     # Drop 'ORIGINAL_TLV' and 'ORIGINAL_SESSIONS' columns
     # Drop sessions - do not want to introduce that noise into the normalized data clustering
     filtered_df = filtered_df.drop(['ORIGINAL_TLV', 'ORIGINAL_SESSIONS', 'sessions'], axis=1)
@@ -121,12 +121,12 @@ def find_most_common_vectors(filtered_df, group, n, precision, LOW, HIGH, LOOP):
     most_common_df['LOW'] = LOW
     most_common_df['HIGH'] = HIGH
     most_common_df['LOOP'] = LOOP
-    most_common_df['ORIGINAL_TLV'] = ORIGINAL_TLV
+    # most_common_df['ORIGINAL_TLV'] = ORIGINAL_TLV
     
     # Reorder columns
-    most_common_df = most_common_df[['Cluster', 'X', 'Y', 'Frequency', 'Group', 'N', 'LOW', 'HIGH', 'LOOP', 'ORIGINAL_TLV'] +
+    most_common_df = most_common_df[['Cluster', 'X', 'Y', 'Frequency', 'Group', 'N', 'LOW', 'HIGH', 'LOOP'] +
                                     [col for col in most_common_df.columns
-                                     if col not in ['Cluster', 'X', 'Y', 'Frequency', 'Group', 'N', 'LOW', 'HIGH', 'LOOP','ORIGINAL_TLV']]]
+                                     if col not in ['Cluster', 'X', 'Y', 'Frequency', 'Group', 'N', 'LOW', 'HIGH', 'LOOP']]]
     
     # Replace values below precision threshold with 0
     most_common_df = most_common_df.round(precision).replace(0, 0.0)
