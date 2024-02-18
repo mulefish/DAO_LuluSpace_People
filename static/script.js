@@ -3,7 +3,6 @@
 let array_meta = [];
 let array_vector = [];
 
-
 let meta_header = ["CLUSTER", "FREQUENCY", "GROUP", "N", "LOW", "HIGH", "LOOP", "ORIGINAL_TLV"]
 
 function doit() {
