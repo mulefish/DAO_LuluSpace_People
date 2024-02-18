@@ -4,12 +4,12 @@ from sklearn.cluster import KMeans
 # from collections import Counter
 
 class CommonThings:
-    CSV_TDD = "data/tdd_data.csv"
-    ROLLUP_PII_FREE='data/rollup_pii_free.csv'
-    ROLLUP_VECTORIZED='data/vectorized_rollup.csv'
+    CSV_TDD = "static/tdd_data.csv"
+    ROLLUP_PII_FREE='static/rollup_pii_free.csv'
+    ROLLUP_VECTORIZED='static/vectorized_rollup.csv'
     PRECISION=6 # how far to the right of the decimal
-    CLUSTERS='data/cluster.csv'
-    CLUSTERS2='data/cluster2.png'
+    CLUSTERS='static/cluster.csv'
+    # CLUSTERS2='data/cluster2.png'
 
 class Colors:
     BG_RED = "\x1b[41m"
