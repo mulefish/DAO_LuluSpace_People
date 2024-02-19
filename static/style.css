@@ -3,6 +3,7 @@ td, th {
 }
 td:hover {
     background-color: lightgray;
+
   }
 .small {
     font-size: small;

@@ -22,6 +22,13 @@ let colors = ["DarkRed",
     "DarkBlue",
     "DarkChocolate"]
 
+let backColor = ["LightSlateGray",
+    "DarkSlateGray",
+    "SteelBlue",
+    "DarkOliveGreen",
+    "RosyBrown",
+    "CadetBlue"]
+
 function makeUI(array_of_groups) {
     document.getElementById("output").innerHTML = ""
     let all_tables = "<table border='0'>"
@@ -31,15 +38,21 @@ function makeUI(array_of_groups) {
         for (let i = 0; i < groups[group].meta.length; i++) {
             const v = groups[group].vector[i]
             const m = groups[group].meta[i]
+
             const n_entries = m[0] // number in this group
-            const tlv = parseInt(m[6]) // tlv ave of this group
-            all_tables += `<tr><td class="small">${n_entries}</td><td>&nbsp;</td><td class="small">$${tlv}</td>`
-            for (let i = 0; i < v.length; i++) {
-                let h = 500 * v[i] // array is scaled 1 to 0 : Scale up!
-                const td = `<td valign="bottom" style="width:4px;" onmouseover="emit(${i})"><div style="height:${h}px; background-color:${clr};" ></div></td>`
-                all_tables += td
+            if (n_entries == 1) {
+                // Ignore 1 offs
+            } else {
+                const tlv = parseInt(m[6]) // tlv ave of this group
+
+                all_tables += `<tr><td class="small" valign="bottom">${n_entries}</td><td>&nbsp;</td><td class="small" valign="bottom">$${tlv}</td>`
+                for (let i = 0; i < v.length; i++) {
+                    let h = 300 * v[i] // array is scaled 1 to 0 : Scale up!
+                    const td = `<td valign="bottom" style="width:4px;" onmouseover="emit(${i}, ${v[i]})"><div style="height:${h}px; background-color:${clr};" ></div></td>`
+                    all_tables += td
+                }
+                all_tables += "</tr>"
             }
-            all_tables += "</tr>"
         }
     })
     all_tables += "</table>"
@@ -47,8 +60,9 @@ function makeUI(array_of_groups) {
 
 
 }
-function emit(columnIndex) {
+function emit(columnIndex, value) {
     document.getElementById("column").innerHTML = vector_columns[columnIndex]
+    document.getElementById("value").innerHTML = value
 }
 
 function getSelectedOptions() {
