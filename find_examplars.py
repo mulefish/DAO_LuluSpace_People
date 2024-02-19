@@ -21,8 +21,8 @@ if __name__ == "__main__":
     output_file_name = CommonThings.CLUSTERS
     bands = [
         (-99999, -1),
-       (1, 1000),
        (0, 0),
+       (1, 1000),
        (1001, 3000),
        (3001,6000),
        (6001,9000),
